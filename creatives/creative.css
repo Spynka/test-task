@@ -1,41 +1,87 @@
+/* ============================================================
+   ПЕРЕМЕННЫЕ
+   ============================================================ */
 :root {
     --bg: #f5f1eb;
     --dark: #2b2825;
     --accent: #9e6b5e;
     --muted: #6f6760;
     --white: #ffffff;
+
+    --radius: 18px;
+    --radius-sm: 12px;
+    --shadow: 0 20px 45px rgba(43, 40, 37, 0.12);
+    --line: rgba(43, 40, 37, 0.08);
 }
 
-* { box-sizing: border-box; }
-html, body { margin: 0; padding: 0; }
+/* ============================================================
+   БАЗА
+   ============================================================ */
+* {
+    box-sizing: border-box;
+}
+
+html, body {
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+}
+
 body {
     font-family: "Space Grotesk", Arial, sans-serif;
     background: var(--bg);
-    color: var(--dark);
+    color: var(--accent);
     min-height: 100vh;
     line-height: 1.5;
+    -webkit-text-size-adjust: 100%;
 }
-a { color: inherit; text-decoration: none; }
 
+a {
+    color: inherit;
+    text-decoration: none;
+}
+
+h1 {
+    font-weight: 600;
+    margin: 0;
+    letter-spacing: -0.02em;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+}
+
+p {
+    margin: 0;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+}
+
+/* ============================================================
+   СТРАНИЦА КРЕАТИВА
+   ============================================================ */
 .creative-page {
     min-height: 100vh;
     display: flex;
     flex-direction: column;
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 clamp(8px, 3vw, 16px);
 }
 
-/* НАВИГАЦИЯ */
+/* ============================================================
+   НАВИГАЦИЯ
+   ============================================================ */
 .creative-nav {
     display: flex;
     align-items: center;
     justify-content: space-between;
     gap: 1rem;
-    padding: 1rem 5vw;
-    background: rgba(245, 241, 235, 0.92);
-    backdrop-filter: blur(14px);
-    border-bottom: 1px solid rgba(43, 40, 37, 0.08);
+    padding: 1rem 0;
+    border-bottom: 1px solid var(--line);
     position: sticky;
     top: 0;
     z-index: 10;
+    background: var(--bg);          /* плотный фон, без полупрозрачности */
 }
 
 .back-link {
@@ -43,11 +89,14 @@ a { color: inherit; text-decoration: none; }
     font-size: 0.95rem;
     transition: color 0.2s ease;
 }
-.back-link:hover { color: var(--accent); }
+
+.back-link:hover {
+    color: var(--accent);
+}
 
 .creative-counter {
     font-weight: 600;
-    color: var(--dark);
+    color: var(--accent);
     font-size: 0.95rem;
 }
 
@@ -61,54 +110,214 @@ a { color: inherit; text-decoration: none; }
     height: 46px;
     border: none;
     border-radius: 50%;
-    background: var(--dark);
+    background: var(--accent);
     color: #fff;
     font-size: 1.3rem;
     line-height: 1;
     cursor: pointer;
-    transition: background 0.2s ease, transform 0.2s ease;
+    transition: transform 0.2s ease, filter 0.2s ease;
 }
-.arrow:hover { background: var(--accent); transform: scale(1.05); }
 
-/* ОСНОВНОЙ КОНТЕНТ */
+.arrow:hover {
+    transform: scale(1.05);
+    filter: brightness(1.08);
+}
+
+.arrow:active {
+    transform: scale(0.96);
+}
+
+/* ============================================================
+   ОСНОВНОЙ КОНТЕНТ
+   ============================================================ */
 .creative-main {
     flex: 1;
     display: flex;
     flex-direction: column;
-    align-items: center;
-    gap: 2rem;
-    padding: 2.5rem 5vw 4rem;
+    align-items: center;           /* картинка по центру */
+    gap: 1.5rem;
+    padding: 1.5rem 0 3rem;
+    min-width: 0;
 }
 
+/* ============================================================
+   КАРТИНКА
+   Пропорции сохраняются. Ширина — сколько даёт контейнер.
+   Высота — не больше экрана минус навигация и отступы.
+   ============================================================ */
 .creative-image {
-    max-width: min(900px, 100%);
-    max-height: 62vh;
-    object-fit: contain;
-    border-radius: 18px;
-    background: #ede7df;
-    box-shadow: 0 20px 45px rgba(43, 40, 37, 0.12);
+    display: block;
+    width: auto;                   /* ключевое: не растягиваем принудительно */
+    height: auto;
+    max-width: 100%;               /* но не шире контейнера */
+    max-height: calc(100vh - 140px);
+    max-height: calc(100dvh - 140px);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    background: transparent;       /* убран бежевый фон */
+    margin: 0 auto;
 }
 
+/* ============================================================
+   ИНФОРМАЦИЯ ПОД КАРТИНКОЙ
+   ============================================================ */
 .creative-info {
     max-width: 760px;
+    width: 100%;
+    margin: 0 auto;
     text-align: center;
+    padding: 0 4px;
 }
 
 .creative-info h1 {
     margin: 0 0 0.8rem;
     font-size: clamp(1.4rem, 3vw, 2.2rem);
-    letter-spacing: -0.02em;
+    line-height: 1.2;
 }
 
 .creative-info p {
-    margin: 0;
     color: var(--muted);
     font-size: 1.05rem;
     line-height: 1.7;
 }
 
+/* ============================================================
+   ПЛАНШЕТ (до 900px)
+   ============================================================ */
+@media (max-width: 900px) {
+    .creative-nav {
+        flex-wrap: wrap;
+        gap: 10px;
+        row-gap: 8px;
+    }
+
+    .creative-nav .back-link {
+        order: 1;
+    }
+
+    .creative-nav .creative-counter {
+        order: 2;
+    }
+
+    .creative-nav .nav-arrows {
+        order: 3;
+        margin-left: auto;
+    }
+
+    .creative-image {
+        max-height: calc(100vh - 160px);
+        max-height: calc(100dvh - 160px);
+    }
+
+    .creative-info h1 {
+        font-size: clamp(22px, 4.4vw, 32px);
+    }
+
+    .creative-info p {
+        font-size: clamp(14px, 3vw, 17px);
+    }
+}
+
+/* ============================================================
+   МОБИЛЬНЫЙ (до 600px)
+   ============================================================ */
 @media (max-width: 600px) {
-    .arrow { width: 40px; height: 40px; font-size: 1.1rem; }
-    .creative-main { padding: 1.5rem 1rem 3rem; gap: 1.2rem; }
-    .creative-image { max-height: 50vh; }
+    .creative-page {
+        padding: 0 8px;
+    }
+
+    /* Навигация в столбик */
+    .creative-nav {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 10px;
+        padding: 12px 0;
+    }
+
+    .creative-nav .back-link {
+        order: 1;
+        align-self: flex-start;
+    }
+
+    .creative-nav .nav-arrows {
+        order: 2;
+        display: flex;
+        justify-content: space-between;
+        gap: 10px;
+        margin-left: 0;
+    }
+
+    .creative-nav .nav-arrows .arrow {
+        min-width: 48px;
+        min-height: 44px;
+    }
+
+    .creative-nav .creative-counter {
+        order: 3;
+        align-self: center;
+    }
+
+    /* Основной блок */
+    .creative-main {
+        gap: 1rem;
+        padding: 1rem 0 2.5rem;
+    }
+
+    /* Картинка — почти во весь экран */
+    .creative-image {
+        max-height: calc(100vh - 210px);
+        max-height: calc(100dvh - 210px);
+        border-radius: var(--radius-sm);
+    }
+
+    .creative-info h1 {
+        font-size: clamp(20px, 6vw, 26px);
+        line-height: 1.22;
+        margin-bottom: 12px;
+    }
+
+    .creative-info p {
+        font-size: clamp(14px, 3.6vw, 16px);
+        line-height: 1.6;
+    }
+}
+
+/* ============================================================
+   УЗКИЕ ЭКРАНЫ (до 380px)
+   ============================================================ */
+@media (max-width: 380px) {
+    .creative-page {
+        padding: 0 6px;
+    }
+
+    .arrow {
+        width: 40px;
+        height: 40px;
+        font-size: 1.1rem;
+    }
+
+    .creative-image {
+        max-height: calc(100vh - 230px);
+        max-height: calc(100dvh - 230px);
+    }
+
+    .creative-info h1 {
+        font-size: 19px;
+    }
+
+    .creative-info p {
+        font-size: 13.5px;
+    }
+}
+
+/* ============================================================
+   УМЕНЬШЕНИЕ АНИМАЦИЙ
+   ============================================================ */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        transition: none !important;
+        animation: none !important;
+    }
 }

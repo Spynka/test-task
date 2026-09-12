@@ -4,14 +4,35 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
     <title>Тестовое задание</title>
-    <!-- FAVICON -->
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%232b2825' rx='20'/%3E%3Ctext x='50' y='66' font-family='Space Grotesk, Arial, sans-serif' font-size='46' font-weight='700' fill='%239e6b5e' text-anchor='middle' letter-spacing='6'%3E%3C/text%3E%3C/svg%3E">
     <link rel="apple-touch-icon" sizes="180x180" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 180 180'%3E%3Crect width='180' height='180' fill='%232b2825' rx='36'/%3E%3Ctext x='90' y='120' font-family='Space Grotesk, Arial, sans-serif' font-size='84' font-weight='700' fill='%239e6b5e' text-anchor='middle' letter-spacing='10'%3E%3C/text%3E%3C/svg%3E">
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/space-grotesk@5.0.8/css/space-grotesk.min.css">
     <link rel="stylesheet" href="creatives/style.css">
     <style>
- 
+        /* --- Адаптивная высота блока вопросов --- */
+
+        /* Окно слайдера: высоту задаёт скрипт под активный слайд */
+        .qa-viewport {
+            overflow: hidden;
+            height: auto;
+            min-height: 0;
+            transition: height .3s ease;
+        }
+
+        /* Слайды больше не растягиваются под самый высокий ответ */
+        .qa-track {
+            align-items: flex-start;
+        }
+
+        .qa-slide {
+            height: auto;
+            min-height: 0;
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .qa-viewport { transition: none; }
+        }
     </style>
 </head>
 <body>
@@ -157,8 +178,8 @@
     const qaData = [
         { q: "Что такое рекламный кабинет Facebook?", a: "Это личный кабинет, который позволяет управлять рекламой: запускать,определять кому показывать, приостанавливать, изменять тарифы и по итогу отслеживать результаты на платформах Facebook, Instagram и в партнерской сети Meta." },
         { q: "Что такое Бизнес-менеджер Facebook?", a: "Кабинет «начальника», который объединяет личные кабинеты сотрудников. Это главный кабинет компании, где лежат все рабочие инструменты (страницы, рекламные кабинеты). Каждому сотруднику выдают доступ только к тем кабинетам, которые ему нужны." },
-        { q: "В чём отличие Бизнес-менеджера от рекламного кабинета?", a: "Бизнес-менеджер - общий кабинет для всей команды. В нём собраны сотрудники, страницы и рекламные кабинеты. Через него удобно управлять рекламой сразу в нескольких кабинетах и проектах.<br><br>Рекламный кабинет - отдельный инструмент для запуска рекламы.<br>Он подходит для одиночных проектов, когда не нужно объединять несколько сотрудников." },
-        { q: "Что такое API?", a: "Это набор инструментов, позволяющий различным программам, обращаться к сторонним программам, получать от неё данные или выполнять действия. В рекламе через API можно получать статистику по кампаниям, управлять кампаниями. Также можно связывать рекламный кабинет с CRM и другими сервисами. API помогает автоматизировать работу с рекламой и анализировать её результаты без ручного входа в кабинет. " },
+        { q: "В чём отличие Бизнес-менеджера от рекламного кабинета?", a: "Бизнес-менеджер - общий кабинет для всей команды. В нём собраны сотрудники, страницы и рекламные кабинеты. Через него удобно управлять рекламой сразу в нескольких кабинетах и проектах.<br><br>Рекламный кабинет - отдельный инструмент для запуска рекламы.<br>Он подходит для одиночных проектов, когда не нужно объединять нескольких сотрудников." },
+        { q: "Что такое API?", a: "Это набор инструментов, позволяющий различным программам, обращаться к сторонним программам, получать от неё данные и выполнять действия. В рекламе через API можно получать статистику по кампаниям, управлять кампаниями. Также можно связывать рекламный кабинет с CRM и другими сервисами. API помогает автоматизировать работу с рекламой и анализировать её результаты без ручного входа в кабинет. " },
         { q: "Что такое токен разработчика?", a: "Это ключ доступа, который выдаётся приложению или программе, чтобы она могла обращаться к API от имени личного, рабочего аккаунта. Грубо говоря, это пароль для программы, имея который она может запрашивать данные и выполнять действия со сторонними ресурсами (сайтами, программами)." },
         { q: "Что за ошибка в Facebook «Запрет рекламной деятельности»?", a: "Ошибка означает, что рекламный кабинет был заблокирован, потому что при размещении рекламы были нарушены правила Facebook. Например: реклама запрещенных товаров, откровенно неправдивые обещания от пользования товаром или услугой, подозрительная активность в любом из ее проявлений, проблемы с оплатой, выявленные попытки обхода системы. Нужно проверить причины и подать апелляцию." },
        {
@@ -178,6 +199,7 @@
     const qaNext = document.getElementById("qaNext");
     const qaCurrent = document.getElementById("qaCurrent");
     const qaTotal = document.getElementById("qaTotal");
+    const qaViewport = document.querySelector(".qa-viewport");
 
     let qaIndex = 0;
     qaTotal.textContent = qaData.length;
@@ -192,9 +214,35 @@
         qaTrack.appendChild(slide);
     });
 
+    /* --- Автовысота: окно слайдера подстраивается под активный слайд --- */
+
+    let qaResizeObserver = null;
+
+    function syncQAHeight() {
+        if (!qaViewport) return;
+        const slide = qaTrack.children[qaIndex];
+        if (!slide) return;
+        qaViewport.style.height = slide.offsetHeight + "px";
+    }
+
+    function observeActiveSlide() {
+        if (!qaViewport || typeof ResizeObserver === "undefined") return;
+        if (qaResizeObserver) qaResizeObserver.disconnect();
+
+        const slide = qaTrack.children[qaIndex];
+        if (!slide) return;
+
+        qaResizeObserver = new ResizeObserver(() => {
+            qaViewport.style.height = slide.offsetHeight + "px";
+        });
+        qaResizeObserver.observe(slide);
+    }
+
     function updateQA() {
         qaTrack.style.transform = `translateX(-${qaIndex * 100}%)`;
         qaCurrent.textContent = qaIndex + 1;
+        syncQAHeight();
+        observeActiveSlide();
     }
 
     qaPrev.addEventListener("click", () => {
@@ -208,6 +256,19 @@
     });
 
     updateQA();
+
+    /* Пересчёт высоты при изменении ширины окна и после загрузки шрифтов */
+    let qaResizeTimer = null;
+    window.addEventListener("resize", () => {
+        clearTimeout(qaResizeTimer);
+        qaResizeTimer = setTimeout(syncQAHeight, 100);
+    });
+
+    window.addEventListener("load", syncQAHeight);
+
+    if (document.fonts && document.fonts.ready) {
+        document.fonts.ready.then(syncQAHeight);
+    }
 </script>
 
 </body>
